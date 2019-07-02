@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ bookInfo.name }}_{{ chapter_no }}</title>
+  {% load static %}
+  <link charset="UTF-8" href="{% static 'css/base.css' %}" rel="stylesheet">
+  <link rel="shortcut icon" href="{% static 'images/book.png' %}" type="image/x-icon">
+</head>
+<body>
+
+<div class="header">
+  <div class="nav"><a href="/">首页</a> > <a href="{% url 'catalog' bookInfo.id %}">{{ bookInfo.name }}</a></div>
+</div>
+
+<div class="content-read">
+  <div class="chapter-control">
+    <a href="{% url 'chapter_detail' bookInfo.id chapter_no|add:-1 %}">上一章</a>
+    <span></span>
+    <a href="{% url 'catalog' bookInfo.id %}">目录</a>
+    <span></span>
+    <a href="{% url 'chapter_detail' bookInfo.id chapter_no|add:+1 %}">下一章</a>
+  </div>
+
+  <div class="content-wrap">
+    <div class="chapter-name">
+      <h3>{{ chapter_name }}</h3>
+    </div>
+    <div class="content">
+      {% for foo in context %}
+        <p>{{ foo }}</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="chapter-control">
+    <a href="{% url 'chapter_detail' bookInfo.id chapter_no|add:-1 %}">上一章</a>
+    <span></span>
+    <a href="{% url 'catalog' bookInfo.id %}">目录</a>
+    <span></span>
+    <a href="{% url 'chapter_detail' bookInfo.id chapter_no|add:+1 %}">下一章</a>
+  </div>
+</div>
+<div class="left-bar-list">
+
+</div>
+<div class="right-bar-list">
+
+</div>
+<div class="footer">
+
+</div>
+</body>
+</html>

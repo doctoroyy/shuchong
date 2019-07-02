@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ bookInfo.name }}</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/base.css' %} ">
+  <link rel="shortcut icon" href="{% static 'images/book.png' %}" type="image/x-icon">
+
+</head>
+<body>
+<div class="header">
+<div class="nav"><a href="/">首页</a> > <a href="{% url 'catalog' bookInfo.id %}">{{ bookInfo.name }}</a></div>
+</div>
+
+<div class="wrap">
+  <div class="book-detail-wrap">
+    <div class="book-information">
+      <div class="book-img">
+        <a href=""><img src="{{ bookInfo.imgSrc }}" alt="图片"></a>
+
+      </div>
+      <div class="book-info ">
+        <h1>
+          <em>{{ bookInfo.name }}</em>
+          <span>
+            <a class="writer" href="" target="_blank" data-eid="qd_G08">{{ bookInfo.author }}·</a> 著</span>
+        </h1>
+        <p>{{ bookInfo.description }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="catalog-content-wrap">
+    <div class="go-top-wrap"><a href="#" class="go-top"></a></div>
+    <h3>正文共{{ len }}章节</h3>
+    <div class="volume">
+      <ul class="">
+        {% for chapter in chapters %}
+          <li><a href="{% url 'chapter_detail' bookInfo.id chapter.no %}">{{ chapter.name }}</a></li>
+        {% endfor %}
+
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

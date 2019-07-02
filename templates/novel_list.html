@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>书虫</title>
+  {% load static %}
+  <link rel="shortcut icon" href="{% static 'images/book.png' %}" type="image/x-icon">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+<div class="wrap">
+  <div class="book-detail-wrap">
+    <div class="detail-l">
+      {% for book in books %}
+        <div class="item">
+          <div class="image"><a href="{% url 'catalog' book.id  %}"><img src="{{ book.imgSrc }}" alt=""></a></div>
+          <dl>
+            <dt><span>{{ book.author }}</span><a href="{% url 'catalog' book.id  %}">{{ book.name }}</a></dt>
+            <dd>
+              {{ book.description }}
+            </dd>
+          </dl>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</body>
+</html>
