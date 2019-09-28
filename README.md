@@ -1,6 +1,6 @@
 # shuchong
 书虫小说后台，定义了前端所需的几个接口 https://api.doctoroyy.cf/
-- getBookList: '/book/getAll',
+> getBookList: '/book/getAll',
   获取小说列表
   method: GET
   入参：无
@@ -23,7 +23,7 @@
       "id": 2,
       "name": "圣墟（圣虚）",
       "tags": null,
-      "description": "在破败中崛起，在寂灭中复苏。    沧海成尘，雷电枯竭，那一缕幽雾又一次临近大地，世间的枷锁被打开了，一个全新的世界就此揭开神秘的一角……",
+      "description": "在破败中崛起，在寂灭中复苏。    沧海成尘，雷电枯竭，那一缕幽雾又一次临近大地，世间的枷锁被打开了，一个全新的世界就此揭开神秘的一角……",
       "imgSrc": "https://www.xbiquge6.com/cover/74/74821/74821s.jpg",
       "author": "辰东"
     },
@@ -39,7 +39,7 @@
       "id": 4,
       "name": "万古神帝",
       "tags": null,
-      "description": "【NEXTIDEA暨2015星创奖征文大赏（玄幻）】    八百年前，明帝之子张若尘，被他的未婚妻池瑶公主杀死，一代无上天骄，就此陨落。    八百年后，张若尘重新活了过来，却发现曾经杀死他的未婚妻，已经统一昆仑界，开辟出第一中央帝国，号称“池瑶女皇”。    池瑶女皇——统御天下，威临八方；青春永驻，不死不灭。    张若尘站在诸皇祠堂外，望着池瑶女皇的神像，心中",
+      "description": "【NEXTIDEA暨2015星创奖征文大赏（玄幻）】    八百年前，明帝之子张若尘，被他的未婚妻池瑶公主杀死，一代无上天骄，就此陨落。    八百年后，张若尘重新活了过来，却发现曾经杀死他的未婚妻，已经统一昆仑界，开辟出第一中央帝国，号称“池瑶女皇”。    池瑶女皇——统御天下，威临八方；青春永驻，不死不灭。    张若尘站在诸皇祠堂外，望着池瑶女皇的神像，心中",
       "imgSrc": "https://www.xbiquge6.com/cover/20/20331/20331s.jpg",
       "author": "飞天鱼"
     },
@@ -94,7 +94,7 @@
   ]
 }
 ```
-- getBookCatalog: '/book/catalog',
+> getBookCatalog: '/book/catalog',
   获取小说目录详情
   method: POST
   入参：id
@@ -124,7 +124,7 @@
 }
 
 ```
-- getChapter: '/book/chapter'
+> getChapter: '/book/chapter'
   获取小说章节详情
   method: POST
   入参：{id, chapterno}
