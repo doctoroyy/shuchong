@@ -1,9 +1,10 @@
 # shuchong
 书虫小说后台，定义了前端所需的几个接口 https://api.doctoroyy.cf/
 - getBookList: '/book/getAll',
-获取小说列表
-入参：无
-出参： 
+  获取小说列表
+  method: GET
+  入参：无
+  出参： 
 ```
 {
   "page": 1,
@@ -94,10 +95,10 @@
 }
 ```
 - getBookCatalog: '/book/catalog',
-获取小说目录详情
-method: POST
-入参：id
-出参：
+  获取小说目录详情
+  method: POST
+  入参：id
+  出参：
 ```
 {
   "code": 0,
@@ -124,10 +125,10 @@ method: POST
 
 ```
 - getChapter: '/book/chapter'
-获取小说章节详情
-method: POST
-入参：{id, chapterno}
-出参: 
+  获取小说章节详情
+  method: POST
+  入参：{id, chapterno}
+  出参: 
 ```
 {
   "context": [
