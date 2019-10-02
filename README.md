@@ -2,10 +2,10 @@
 书虫小说后台，定义了前端所需的几个接口 https://api.doctoroyy.cf/
 > getBookList: '/book/getAll',
   - 获取小说列表
-  - method: GET
-  - 入参：无
+  - method: POST
+  - 入参：``` {"page":1,"pageSize":100} ```
   - 出参： 
-```
+```json
 {
   "page": 1,
   "pageSize": 100,
@@ -99,7 +99,7 @@
   - method: POST
   - 入参：id
   - 出参：
-```
+```json
 {
   "code": 0,
   "data": {
@@ -129,7 +129,7 @@
   - method: POST
   - 入参：{id, chapterno}
   - 出参: 
-```
+```json
 {
   "context": [
     "",
