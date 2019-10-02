@@ -4,9 +4,9 @@
 
   - method: POST
   - 入参：
-  ```
-  	{"page":1,"pageSize":100} 
-  ```
+```
+{"page":1,"pageSize":100} 
+```
   
   - 出参： 
 ```
