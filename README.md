@@ -90,3 +90,34 @@
   "name": "第六章 白袍少年"
 }
 ```
+
+### /book/search 搜索小说
+  - method: POST
+  - 入参：
+  ```
+  {"keyword":"诛仙"}
+  ```
+  
+  - 出参: 
+```json
+[
+  {
+    "name": "一念诛仙",
+    "imgSrc": "https://www.xbiquge6.com/cover/72/72996/72996s.jpg",
+    "url": "https://www.xbiquge6.com/72_72996/",
+    "description": "死即是生，身陨又如何；神魄尚存，皇威镇苍生。修罗地狱吾驰骋，三十三天仍纵横。三界无人可相敌，浴火涅盘转人身。我欲成王怜万物，无奈独喜黄金甲。我欲卸甲以归田，苦叹人间烦恼多。我欲归隐山林静，却爱凡俗鼓乐...",
+    "author": "离恨殇歌",
+    "updateTime": "2016-12-10",
+    "latestChapter": "第六十七章:开学跟我有什么关系"
+  },
+  {
+    "name": "诛仙之天火",
+    "imgSrc": "https://www.xbiquge6.com/cover/68/68706/68706s.jpg",
+    "url": "https://www.xbiquge6.com/68_68706/",
+    "description": "神州浩土，修罗之乱近百年后，流民回所，百废俱兴。南疆，七里峒，一个身世奇异足以惊天的少年，带上了舅舅送他的“合欢铃”，背井离乡，北上青云，为的是寻找一个可以救得自己的性命的人——张小凡！由此，一个新的...",
+    "author": "旅艺",
+    "updateTime": "2016-12-10",
+    "latestChapter": "第五十二章 不是叛变"
+  }
+]
+```
