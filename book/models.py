@@ -8,6 +8,8 @@ class Novel(models.Model):
   description = models.CharField(max_length=300, null=True)
   imgSrc = models.CharField(max_length=200)
   author = models.CharField(max_length=10, null=True)
+  updateTime = models.CharField(max_length=100, null=True)
+  latestChapter = models.CharField(max_length=100, null=True)
 
 
 class Chapter(models.Model):

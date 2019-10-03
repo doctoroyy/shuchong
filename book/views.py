@@ -8,7 +8,7 @@ from django.conf import settings
 # Create your views here.
 from book import utils
 from book.models import Novel, Chapter
-from book.utils import save_book, get_chapter_content
+from book.utils import save_book, get_chapter_content, __search_book
 from main import get_json_data
 from django.views.decorators.csrf import csrf_exempt
 
@@ -83,6 +83,12 @@ def get_all_books(request):
 
   return HttpResponse(json.dumps(data))
 
+@csrf_exempt
+def search_book(request):
+  body = json.loads(request.body)
+  keyword = body['keyword']
+  books = __search_book(keyword)
+  return HttpResponse(json.dumps(books))
 
 
 # 历史
@@ -104,6 +110,7 @@ def catalog2(request, book_id):
   data['name'] = bookInfo.name
   # return HttpResponse(json.dumps(data), content_type="application/json")
   return render(request, 'chapterlist.html', {'chapters': chapters, 'bookInfo': bookInfo, 'len': len})
+
 
 def chapter_detail(request, book_id, chapter_no):
   bookInfo = Novel.objects.get(id=book_id)

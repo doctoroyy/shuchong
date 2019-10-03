@@ -9,6 +9,7 @@ urlpatterns = [
   path('book/getAll', views.get_all_books, name='get_all_books'),
   path('book/chapter', views.chapter, name='getChapter'),
   path('book/catalog', views.catalog, name='getCatalog'),
+  path('book/search', views.search_book, name='searchBook'),
   # 历史
   path('catalog/<int:book_id>/', views.catalog2, name='catalog'),
   path('book/<int:book_id>/<int:chapter_no>/', views.chapter_detail, name='chapter_detail'),
