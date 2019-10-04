@@ -35,24 +35,22 @@ def download(request):
 @csrf_exempt
 def chapter(request):
   body = json.loads(request.body)
-  bookId = int(body['id'])
+  bookId = str(body['id'])
+  novel_id = dict(Novel.objects.filter(biqugePath=bookId).values()[0])['id']
   chapterNo = int(body['chapterno'])
-  spiderUrl = Chapter.objects.get(novel_id=bookId, no=chapterNo).context_url
-  name = Chapter.objects.get(novel_id=bookId, no=chapterNo).name
-  context = get_chapter_content(BOOK_SRC_URL + spiderUrl).split('\xa0\xa0\xa0\xa0')
+  print()
+  context_url = Chapter.objects.filter(novel_id=novel_id, no=chapterNo).values()[0]['context_url']
+  data = get_chapter_content(BOOK_SRC_URL + context_url)
 
-  data = {
-    'context': context,
-    'name': name
-  }
   return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 @csrf_exempt
 def catalog(request):
-  bookId = request.GET['id']
+  biqugePath = request.GET['id']
+  info = dict(Novel.objects.filter(biqugePath=biqugePath).values()[0])
+  bookId = info['id']
   calalog = Chapter.objects.filter(novel_id=bookId).values()
-  info = Novel.objects.filter(id=bookId).values()[0]
   data = {
     'code': 0,
     'data': {
@@ -82,6 +80,7 @@ def get_all_books(request):
   }
 
   return HttpResponse(json.dumps(data))
+
 
 @csrf_exempt
 def search_book(request):

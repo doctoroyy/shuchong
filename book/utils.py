@@ -43,17 +43,30 @@ def get_description(soup):
 
 
 def get_chapter_list(soup):
-  return soup.select('dd > a')
+  res = soup.select('dd > a')
+  res_list = []
+  for item in res:
+    res_list.append({
+      'name': item.text,
+      'context_url': item['href']
+    })
+  return res_list
 
 
 def get_chapter_content(content_url):
   html = get_html_doc(content_url)
   soup = bs(html, 'lxml')
-  return soup.select('#content')[0].text
+  context = soup.select('#content')[0].text.split('\xa0\xa0\xa0\xa0')
+  name = soup.select('.bookname > h1')[0].text
+  return {
+    'context': context,
+    'name': name
+  }
 
 
-def save_book(book_url):
+def download(book_url):
   soup = bs(get_html_doc(book_url), 'lxml')
+  biqugePath = book_url.split('/')[3]
   book_name = get_book_name(soup)
   desc = get_description(soup)
   imgSrc = get_img_src(soup)
@@ -61,18 +74,37 @@ def save_book(book_url):
   author = get_author_name(soup)
   updateTime = get_update_time(soup)
   latestChapter = get_latest_chapter(soup)
-  if Novel.objects.filter(name=book_name).count() == 0:
-    Novel.objects.create(name=book_name, description=desc,
-                         imgSrc=imgSrc, author=author,
-                         updateTime=updateTime, latestChapter=latestChapter)
+  return {
+    'code': 0,
+    'data': {
+      'bookInfo': {
+        'name': book_name,
+        'description': desc,
+        'imgSrc': imgSrc,
+        'author': author,
+        'updateTime': updateTime,
+        'latestChapter': latestChapter,
+        'biqugePath': biqugePath,
+      },
+      'chapters': chapter_list
+    },
+  }
 
-  book_id = Novel.objects.get(name=book_name).id
-  for chapter in chapter_list:
-    chapter_name = chapter.text
-    if Chapter.objects.filter(novel_id_id=book_id, name=chapter_name).count() == 0:
+
+def save_book(book_url):
+  a_book = download(book_url)['data']
+  bookInfo = a_book['bookInfo']
+  chapter_list = a_book['chapters']
+  if Novel.objects.filter(name=bookInfo['name']).count() == 0:
+    Novel.objects.create(name=bookInfo['name'], description=bookInfo['description'],
+                         imgSrc=bookInfo['imgSrc'], author=bookInfo['author'],
+                         biqugePath=bookInfo['biqugePath'],
+                         updateTime=bookInfo['updateTime'], latestChapter=bookInfo['latestChapter'])
+    book_id = Novel.objects.get(name=bookInfo['name']).id
+    for chapter in chapter_list:
       Chapter.objects.create(novel_id_id=book_id, no=chapter_list.index(chapter) + 1,
-                             name=chapter_name, context_url=chapter['href'])
-      print(chapter_name)
+                             name=chapter['name'], context_url=chapter['context_url'])
+      # print(chapter['name'])
 
 
 def __search_book(keyword):
@@ -84,14 +116,14 @@ def __search_book(keyword):
     imgSrc = item.select('a.result-game-item-pic-link > img')[0]['src']
     tmp = item.select('a.result-game-item-title-link')[0]
     name = tmp['title']
-    url = tmp['href']
+    biqugePath = tmp['href']
     author = item.select('p.result-game-item-info-tag')[0].select('span')[1].text
     latestChapter = item.select('a.result-game-item-info-tag-item')[0].text
     updateTime = item.select('p.result-game-item-info-tag')[2].select('span')[1].text
     rep_li.append({
       'name': name,
       'imgSrc': imgSrc,
-      'url': url,
+      'biqugePath': biqugePath.split('/')[3],
       'description': desc,
       'author': author.strip(),
       'updateTime': updateTime,

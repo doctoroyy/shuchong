@@ -10,6 +10,7 @@ class Novel(models.Model):
   author = models.CharField(max_length=10, null=True)
   updateTime = models.CharField(max_length=100, null=True)
   latestChapter = models.CharField(max_length=100, null=True)
+  biqugePath = models.CharField(max_length=100, null=True)
 
 
 class Chapter(models.Model):
