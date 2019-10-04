@@ -2,8 +2,9 @@ import re
 
 import requests
 from bs4 import BeautifulSoup as bs
-
+from datetime import  datetime
 from book.models import Novel, Chapter
+import django.utils.timezone as timezone
 
 header = {
   'user-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'
@@ -75,36 +76,52 @@ def download(book_url):
   updateTime = get_update_time(soup)
   latestChapter = get_latest_chapter(soup)
   return {
-    'code': 0,
-    'data': {
-      'bookInfo': {
-        'name': book_name,
-        'description': desc,
-        'imgSrc': imgSrc,
-        'author': author,
-        'updateTime': updateTime,
-        'latestChapter': latestChapter,
-        'biqugePath': biqugePath,
-      },
-      'chapters': chapter_list
-    },
+    'name': book_name,
+    'description': desc,
+    'imgSrc': imgSrc,
+    'author': author,
+    'updateTime': updateTime,
+    'latestChapter': latestChapter,
+    'biqugePath': biqugePath,
+    'chapters': chapter_list
   }
 
 
+def update_book(book_url):
+  bookInfo = download(book_url)
+  chapters = bookInfo['chapters']
+  lastChapterOnSearch = chapters[-1]
+  Novel_now = Novel.objects.filter(name=bookInfo['name'])  # 当前操作的小说对象
+  Novel_now.update(updateTimeOnServer=timezone.now())
+  novel_id = Novel_now.values_list()[0]
+  lastChapterOnDb = list(Chapter.objects.filter(novel_id=novel_id).values())[-1]
+  if lastChapterOnSearch['name'] != lastChapterOnDb['name']:
+    Novel_now.update(latestChapter=bookInfo['latestChapter'],
+                     updateTime=bookInfo['updateTime'])
+    no = lastChapterOnDb['no']
+    index = chapters.index({'name': lastChapterOnDb['name'],
+                            'context_url': lastChapterOnDb['context_url']})
+    len = chapters.__len__()
+    queryList = []
+    for i in range(index + 1, len):
+      queryList.append(Chapter(novel_id_id=novel_id, no=i,
+                               name=chapters[i]['name'], context_url=chapters[i]['context_url']))
+
+
 def save_book(book_url):
-  a_book = download(book_url)['data']
-  bookInfo = a_book['bookInfo']
-  chapter_list = a_book['chapters']
+  bookInfo = download(book_url)
+  chapter_list = bookInfo['chapters']
   if Novel.objects.filter(name=bookInfo['name']).count() == 0:
     Novel.objects.create(name=bookInfo['name'], description=bookInfo['description'],
                          imgSrc=bookInfo['imgSrc'], author=bookInfo['author'],
                          biqugePath=bookInfo['biqugePath'],
                          updateTime=bookInfo['updateTime'], latestChapter=bookInfo['latestChapter'])
     book_id = Novel.objects.get(name=bookInfo['name']).id
+    querySetList = []
     for chapter in chapter_list:
-      Chapter.objects.create(novel_id_id=book_id, no=chapter_list.index(chapter) + 1,
-                             name=chapter['name'], context_url=chapter['context_url'])
-      # print(chapter['name'])
+      querySetList.append(Chapter(novel_id_id=book_id, no=chapter_list.index(chapter) + 1,
+                                  name=chapter['name'], context_url=chapter['context_url']))
+    Chapter.objects.bulk_create(querySetList)
 
 
 def __search_book(keyword):
@@ -133,7 +150,18 @@ def __search_book(keyword):
 
 
 if __name__ == '__main__':
+  print(datetime.now())
+  # d1 = datetime.strptime('2012-03-05 17:41:20', '%Y-%m-%d %H:%M:%S')
+  # d2 = datetime.strptime('2012-03-02 17:41:20', '%Y-%m-%d %H:%M:%S')
+  # delta = d1 - d2
+  # print(delta.days)
+  # print(datetime.now().strptime())
+  # print(str(datetime.strptime(datetime.now(), )))
+
   # soup = bs(get_html_doc('https://www.xbiquge6.com/74_74821/'), 'lxml')
   # print(get_update_time(soup), get_latest_chapter(soup))
   # print(search_book('完美世界'))
-  pass
+  # print([1, 2, 3][-1])
+  # print([{'name': 'oyy'}, {'name': 'oyy2'}].index({'name': 'oyy2'}))
+  # pass
+

@@ -1,6 +1,9 @@
 import json
 import os
 import threading
+from time import sleep
+
+import django.utils.timezone as timezone
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -8,11 +11,10 @@ from django.conf import settings
 # Create your views here.
 from book import utils
 from book.models import Novel, Chapter
-from book.utils import save_book, get_chapter_content, __search_book
+from book.utils import save_book, get_chapter_content, __search_book, update_book
 from main import get_json_data
 from django.views.decorators.csrf import csrf_exempt
 
-from shuchong1.settings import BOOK_SRC_URL
 from django.core.paginator import Paginator
 
 
@@ -22,25 +24,27 @@ def index(request):
 
 
 def download(request):
-  book_id = request.GET['id']
-
-  if book_id not in settings.BOOK_DOWNLOAD_QUEUE:
-    settings.BOOK_DOWNLOAD_QUEUE.add(book_id)
-    # print(u'新线程开始....')
-    threading.Thread(target=save_book, args=[settings.BOOK_SRC_URL + '/' + book_id, ]).start()
-
+  biqugePath = request.GET['id']
+  if Novel.objects.filter(biqugePath=biqugePath).count() == 0:
+    # print('进入线程')
+    threading.Thread(target=save_book, args=[settings.BOOK_SRC_URL + '/' + biqugePath, ]).start()
   return HttpResponse('downloading...')
+
+
+def update(request):
+  book_id = request.GET['id']
+  update_book(settings.BOOK_SRC_URL + '/' + book_id)
+  return HttpResponse('更新！')
 
 
 @csrf_exempt
 def chapter(request):
   body = json.loads(request.body)
-  bookId = str(body['id'])
-  novel_id = dict(Novel.objects.filter(biqugePath=bookId).values()[0])['id']
+  biqugePath = str(body['id'])
+  novel_id = dict(Novel.objects.filter(biqugePath=biqugePath).values()[0])['id']
   chapterNo = int(body['chapterno'])
-  print()
   context_url = Chapter.objects.filter(novel_id=novel_id, no=chapterNo).values()[0]['context_url']
-  data = get_chapter_content(BOOK_SRC_URL + context_url)
+  data = get_chapter_content(settings.BOOK_SRC_URL + context_url)
 
   return HttpResponse(json.dumps(data), content_type="application/json")
 
@@ -48,8 +52,23 @@ def chapter(request):
 @csrf_exempt
 def catalog(request):
   biqugePath = request.GET['id']
-  info = dict(Novel.objects.filter(biqugePath=biqugePath).values()[0])
-  bookId = info['id']
+  novel_now = Novel.objects.filter(biqugePath=biqugePath).values()[0]
+  d1 = timezone.now()
+  d2 = novel_now['updateTimeOnServer']
+  if (d1 - d2).days >= 1:
+    threading.Thread(target=update_book, args=[settings.BOOK_SRC_URL + '/' + biqugePath, ]).start()
+    sleep(1)
+  info = {
+    'name': novel_now['name'],
+    'description': novel_now['description'],
+    'author': novel_now['author'],
+    'imgSrc': novel_now['imgSrc'],
+    'latestChapter': novel_now['latestChapter'],
+    'updateTime': novel_now['updateTime'],
+    'biqugePath': novel_now['biqugePath'],
+    'tags': novel_now['tags'],
+  }
+  bookId = novel_now['id']
   calalog = Chapter.objects.filter(novel_id=bookId).values()
   data = {
     'code': 0,
@@ -66,7 +85,16 @@ def get_all_books(request):
   body = json.loads(request.body)
   page = body['page']
   page_size = body['pageSize']
-  book_list = Novel.objects.all().values()
+  book_list = Novel.objects.all().values(
+    'name',
+    'description',
+    'author',
+    'imgSrc',
+    'latestChapter',
+    'updateTime',
+    'biqugePath',
+    'tags',
+  )
   p = Paginator(book_list, page_size)
   total = book_list.__len__()
   pages = total / page_size

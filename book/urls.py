@@ -6,6 +6,7 @@ from book import views
 urlpatterns = [
   path('', views.index, name='index'),
   path('book/download/', views.download, name='download'),
+  path('book/update/', views.update, name='update'),
   path('book/getAll', views.get_all_books, name='get_all_books'),
   path('book/chapter', views.chapter, name='getChapter'),
   path('book/catalog', views.catalog, name='getCatalog'),

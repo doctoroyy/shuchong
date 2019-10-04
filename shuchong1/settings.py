@@ -22,9 +22,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'aj)_t*x+(6vb02z(4i1m*ha+3bhs)xg08su8(*ltm_bj6wol6t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['34.80.121.159', 'localhost', '192.168.137.1', '127.0.0.1', '10.0.80.40', 'doctoroyy.cf', '192.168.43.52', ]
+ALLOWED_HOSTS = ['34.80.121.159', 'localhost', '192.168.137.1', '127.0.0.1', '10.0.80.40', 'doctoroyy.cf',
+                 '192.168.43.52', 'api.doctoroyy.cf']
 
 # Application definition
 
@@ -54,7 +55,6 @@ MIDDLEWARE = [
 # 跨域增加忽略
 # CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
-
 
 CORS_ALLOW_METHODS = (
   'DELETE',
@@ -154,8 +154,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
-BOOK_DOWNLOAD_QUEUE = set()
 
 BOOK_SRC_URL = 'https://www.xbiquge6.com'
 
