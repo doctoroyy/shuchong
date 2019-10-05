@@ -2,7 +2,7 @@ import re
 
 import requests
 from bs4 import BeautifulSoup as bs
-from datetime import  datetime
+from datetime import datetime
 from book.models import Novel, Chapter
 import django.utils.timezone as timezone
 
@@ -93,19 +93,18 @@ def update_book(book_url):
   lastChapterOnSearch = chapters[-1]
   Novel_now = Novel.objects.filter(name=bookInfo['name'])  # 当前操作的小说对象
   Novel_now.update(updateTimeOnServer=timezone.now())
-  novel_id = Novel_now.values_list()[0]
+  novel_id = Novel_now.values('id')[0]['id']
   lastChapterOnDb = list(Chapter.objects.filter(novel_id=novel_id).values())[-1]
   if lastChapterOnSearch['name'] != lastChapterOnDb['name']:
     Novel_now.update(latestChapter=bookInfo['latestChapter'],
                      updateTime=bookInfo['updateTime'])
-    no = lastChapterOnDb['no']
-    index = chapters.index({'name': lastChapterOnDb['name'],
-                            'context_url': lastChapterOnDb['context_url']})
+    index = lastChapterOnDb['no']
     len = chapters.__len__()
     queryList = []
-    for i in range(index + 1, len):
-      queryList.append(Chapter(novel_id_id=novel_id, no=i,
+    for i in range(index, len):
+      queryList.append(Chapter(novel_id_id=novel_id, no=i + 1,
                                name=chapters[i]['name'], context_url=chapters[i]['context_url']))
+    Chapter.objects.bulk_create(queryList)
 
 
 def save_book(book_url):
@@ -150,7 +149,9 @@ def __search_book(keyword):
 
 
 if __name__ == '__main__':
-  print(datetime.now())
+  a = [{'name': 1}, {'name': 1}, {'name': 3}, {'name': 4}, {'name': 5}]
+  for (item, index) in a:
+    print(item, index)
   # d1 = datetime.strptime('2012-03-05 17:41:20', '%Y-%m-%d %H:%M:%S')
   # d2 = datetime.strptime('2012-03-02 17:41:20', '%Y-%m-%d %H:%M:%S')
   # delta = d1 - d2
@@ -164,4 +165,3 @@ if __name__ == '__main__':
   # print([1, 2, 3][-1])
   # print([{'name': 'oyy'}, {'name': 'oyy2'}].index({'name': 'oyy2'}))
   # pass
-
