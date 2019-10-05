@@ -19,8 +19,7 @@ from django.core.paginator import Paginator
 
 
 def index(request):
-  books = Novel.objects.all()
-  return render(request, 'novel_list.html', {'books': books})
+  return render(request, 'novel_list.html')
 
 
 def download(request):
@@ -58,8 +57,7 @@ def catalog(request):
   d2 = novel_now['updateTimeOnServer']
   if (d1 - d2).seconds / 3600 >= 8:
     update_book(settings.BOOK_SRC_URL + '/' + biqugePath)
-    # threading.Thread(target=update_book, args=[settings.BOOK_SRC_URL + '/' + biqugePath, ]).start()
-    # sleep(1)
+    novel_now = Novel.objects.filter(biqugePath=biqugePath).values()[0]  # 更新完成后应该更新数据，否则返回的就是历史数据
   info = {
     'name': novel_now['name'],
     'description': novel_now['description'],
