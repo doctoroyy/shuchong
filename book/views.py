@@ -27,7 +27,8 @@ def download(request):
   biqugePath = request.GET['id']
   if Novel.objects.filter(biqugePath=biqugePath).count() == 0:
     # print('进入线程')
-    threading.Thread(target=save_book, args=[settings.BOOK_SRC_URL + '/' + biqugePath, ]).start()
+    # threading.Thread(target=save_book, args=[settings.BOOK_SRC_URL + '/' + biqugePath, ]).start()
+    save_book(settings.BOOK_SRC_URL + '/' + biqugePath)
   return HttpResponse('downloading...')
 
 
@@ -56,8 +57,9 @@ def catalog(request):
   d1 = timezone.now()
   d2 = novel_now['updateTimeOnServer']
   if (d1 - d2).days >= 1:
-    threading.Thread(target=update_book, args=[settings.BOOK_SRC_URL + '/' + biqugePath, ]).start()
-    sleep(1)
+    update_book(settings.BOOK_SRC_URL + '/' + biqugePath)
+    # threading.Thread(target=update_book, args=[settings.BOOK_SRC_URL + '/' + biqugePath, ]).start()
+    # sleep(1)
   info = {
     'name': novel_now['name'],
     'description': novel_now['description'],

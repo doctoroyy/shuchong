@@ -110,17 +110,16 @@ def update_book(book_url):
 def save_book(book_url):
   bookInfo = download(book_url)
   chapter_list = bookInfo['chapters']
-  if Novel.objects.filter(name=bookInfo['name']).count() == 0:
-    Novel.objects.create(name=bookInfo['name'], description=bookInfo['description'],
-                         imgSrc=bookInfo['imgSrc'], author=bookInfo['author'],
-                         biqugePath=bookInfo['biqugePath'],
-                         updateTime=bookInfo['updateTime'], latestChapter=bookInfo['latestChapter'])
-    book_id = Novel.objects.get(name=bookInfo['name']).id
-    querySetList = []
-    for chapter in chapter_list:
-      querySetList.append(Chapter(novel_id_id=book_id, no=chapter_list.index(chapter) + 1,
-                                  name=chapter['name'], context_url=chapter['context_url']))
-    Chapter.objects.bulk_create(querySetList)
+  Novel.objects.create(name=bookInfo['name'], description=bookInfo['description'],
+                       imgSrc=bookInfo['imgSrc'], author=bookInfo['author'],
+                       biqugePath=bookInfo['biqugePath'],
+                       updateTime=bookInfo['updateTime'], latestChapter=bookInfo['latestChapter'])
+  book_id = Novel.objects.get(name=bookInfo['name']).id
+  querySetList = []
+  for chapter in chapter_list:
+    querySetList.append(Chapter(novel_id_id=book_id, no=chapter_list.index(chapter) + 1,
+                                name=chapter['name'], context_url=chapter['context_url']))
+  Chapter.objects.bulk_create(querySetList)
 
 
 def __search_book(keyword):
