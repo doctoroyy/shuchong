@@ -38,7 +38,7 @@
   - method: POST
   - 入参：
  ```
- {"id": 1}
+ {"id": "78_78513"}
  ```
  
   - 出参：
@@ -56,7 +56,6 @@
       }
     ],
     "bookInfo": {
-      "id": 1,
       "name": "苏厨",
       "tags": null,
       "description": "治大国如烹小鲜，因此，这是一个吃货治国的故事，从北宋皇佑四年开始……",
@@ -71,7 +70,7 @@
   - method: POST
   - 入参：
   ```
-  {"id": 1,  "chapterno": 1}
+  {"id": "78_78513",  "chapterno": 1}
   ```
   
   - 出参: 
@@ -120,4 +119,27 @@
     "latestChapter": "第五十二章 不是叛变"
   }
 ]
+```
+
+### /book/download 搜索小说
+  - method: GET
+  - 入参：
+  ```
+  {"id":"78_78513"}
+  ```
+  
+  - 出参: 
+```json
+"downloading..."
+```
+### /book/update 更新小说
+  - method: GET
+  - 入参：
+  ```
+  {"id":"78_78513"}
+  ```
+  
+  - 出参: 
+```json
+"update"
 ```
