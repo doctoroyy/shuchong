@@ -56,7 +56,7 @@ def catalog(request):
   novel_now = Novel.objects.filter(biqugePath=biqugePath).values()[0]
   d1 = timezone.now()
   d2 = novel_now['updateTimeOnServer']
-  if (d1 - d2).days >= 1:
+  if (d1 - d2).seconds / 3600 >= 8:
     update_book(settings.BOOK_SRC_URL + '/' + biqugePath)
     # threading.Thread(target=update_book, args=[settings.BOOK_SRC_URL + '/' + biqugePath, ]).start()
     # sleep(1)
