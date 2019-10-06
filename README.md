@@ -121,7 +121,7 @@
 ]
 ```
 
-### /book/download 搜索小说
+### /book/download 下载小说
   - method: GET
   - 入参：
   ```
