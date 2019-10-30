@@ -39,10 +39,9 @@ def update(request):
 
 @csrf_exempt
 def chapter(request):
-  body = json.loads(request.body)
-  biqugePath = str(body['id'])
+  biqugePath = str(request.GET['id'])
   novel_id = dict(Novel.objects.filter(biqugePath=biqugePath).values()[0])['id']
-  chapterNo = int(body['chapterno'])
+  chapterNo = int(request.GET['chapterno'])
   context_url = Chapter.objects.filter(novel_id=novel_id, no=chapterNo).values()[0]['context_url']
   data = get_chapter_content(settings.BOOK_SRC_URL + context_url)
 
@@ -82,9 +81,8 @@ def catalog(request):
 
 @csrf_exempt
 def get_all_books(request):
-  body = json.loads(request.body)
-  page = body['page']
-  page_size = body['pageSize']
+  page = int(request.GET['page'])
+  page_size = int(request.GET['pageSize'])
   book_list = Novel.objects.all().values(
     'name',
     'description',
@@ -112,8 +110,7 @@ def get_all_books(request):
 
 @csrf_exempt
 def search_book(request):
-  body = json.loads(request.body)
-  keyword = body['keyword']
+  keyword = request.GET['keyword']
   books = __search_book(keyword)
   return HttpResponse(json.dumps(books))
 
