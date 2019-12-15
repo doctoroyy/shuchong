@@ -25,7 +25,7 @@ SECRET_KEY = 'aj)_t*x+(6vb02z(4i1m*ha+3bhs)xg08su8(*ltm_bj6wol6t'
 DEBUG = False
 
 ALLOWED_HOSTS = ['34.80.121.159', 'localhost', '192.168.137.1', '127.0.0.1', '10.0.80.40', 'doctoroyy.net',
-                 '192.168.43.52', 'api.doctoroyy.cf']
+                 '139.9.116.211', 'django', '192.168.43.52', 'api.doctoroyy.net']
 
 # Application definition
 
