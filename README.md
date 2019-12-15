@@ -1,8 +1,8 @@
 # shuchong
-书虫小说后台，定义了前端所需的几个接口 https://api.doctoroyy.cf/
+书虫小说后台，定义了前端所需的几个接口 https://api.doctoroyy.net/
 ###  /book/getAll   获取小说列表
 
-  - method: POST
+  - method: GET
   - 入参：
 ```
 {"page":1,"pageSize":100} 
@@ -35,7 +35,7 @@
 }
 ```
 ### /book/catalog 获取小说目录详情
-  - method: POST
+  - method: GET
   - 入参：
  ```
  {"id": "78_78513"}
@@ -67,7 +67,7 @@
 ```
 
 ### /book/chapter 获取小说章节详情
-  - method: POST
+  - method: GET
   - 入参：
   ```
   {"id": "78_78513",  "chapterno": 1}
@@ -91,7 +91,7 @@
 ```
 
 ### /book/search 搜索小说
-  - method: POST
+  - method: GET
   - 入参：
   ```
   {"keyword":"诛仙"}
@@ -121,7 +121,7 @@
 ]
 ```
 
-### /book/download 搜索小说
+### /book/download 下载小说
   - method: GET
   - 入参：
   ```
