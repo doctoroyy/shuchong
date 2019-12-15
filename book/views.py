@@ -55,8 +55,9 @@ def catalog(request):
   d1 = timezone.now()
   d2 = novel_now['updateTimeOnServer']
   if (d1 - d2).seconds / 3600 >= 8:
-    update_book(settings.BOOK_SRC_URL + '/' + biqugePath)
-    novel_now = Novel.objects.filter(biqugePath=biqugePath).values()[0]  # 更新完成后应该更新数据，否则返回的就是历史数据
+    threading.Thread(target=update_book, args=[settings.BOOK_SRC_URL + '/' + biqugePath, ]).start()
+    # update_book(settings.BOOK_SRC_URL + '/' + biqugePath)
+    # novel_now = Novel.objects.filter(biqugePath=biqugePath).values()[0]  # 更新完成后应该更新数据，否则返回的就是历史数据
   info = {
     'name': novel_now['name'],
     'description': novel_now['description'],
@@ -83,6 +84,7 @@ def catalog(request):
 def get_all_books(request):
   page = int(request.GET['page'])
   page_size = int(request.GET['pageSize'])
+
   book_list = Novel.objects.all().values(
     'name',
     'description',
@@ -101,6 +103,7 @@ def get_all_books(request):
   data = {
     'page': page,
     'pageSize': page_size,
+    'pageCount': int(pages),
     'total': total,
     'data': p.page(page).object_list
   }

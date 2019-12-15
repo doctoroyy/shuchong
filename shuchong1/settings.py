@@ -24,7 +24,7 @@ SECRET_KEY = 'aj)_t*x+(6vb02z(4i1m*ha+3bhs)xg08su8(*ltm_bj6wol6t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['34.80.121.159', 'localhost', '192.168.137.1', '127.0.0.1', '10.0.80.40', 'doctoroyy.cf',
+ALLOWED_HOSTS = ['34.80.121.159', 'localhost', '192.168.137.1', '127.0.0.1', '10.0.80.40', 'doctoroyy.net',
                  '192.168.43.52', 'api.doctoroyy.cf']
 
 # Application definition
@@ -148,7 +148,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False #如果不设为false，上面设置上海时区也无效
+USE_TZ = False  # 如果不设为false，上面设置上海时区也无效
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -158,3 +158,10 @@ STATIC_URL = '/static/'
 BOOK_SRC_URL = 'https://www.xbiquge6.com'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+CACHES = {
+  'default': {
+    'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+    'LOCATION': '/home/wwwroot/shuchong1/shuchong1.sock',
+  }
+}
