@@ -43,9 +43,17 @@ def chapter(request):
   novel_id = dict(Novel.objects.filter(biqugePath=biqugePath).values()[0])['id']
   chapterNo = int(request.GET['chapterno'])
   context_url = Chapter.objects.filter(novel_id=novel_id, no=chapterNo).values()[0]['context_url']
-  data = get_chapter_content(settings.BOOK_SRC_URL + context_url)
+  filepath = 'cache/%s.json' % (context_url)
 
-  return HttpResponse(json.dumps(data), content_type="application/json")
+  # 如果文件不存在
+  if os.path.exists(filepath) is not True:
+    data = get_chapter_content(settings.BOOK_SRC_URL + context_url)
+    with open(filepath, 'wb') as outfile:
+      outfile.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
+    return HttpResponse(json.dumps(data), content_type="application/json")
+  f = open(filepath, encoding='utf-8')
+  return HttpResponse(f.read(), content_type="application/json")
+
 
 
 @csrf_exempt
@@ -107,6 +115,8 @@ def get_all_books(request):
     'total': total,
     'data': p.page(page).object_list
   }
+  with open('1.txt', 'wb+') as file:
+    file.write(data)
 
   return HttpResponse(json.dumps(data))
 
