@@ -9,10 +9,11 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-
+import datetime
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -21,8 +22,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'aj)_t*x+(6vb02z(4i1m*ha+3bhs)xg08su8(*ltm_bj6wol6t'
 
+REST_FRAMEWORK = {
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+    'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    'rest_framework.authentication.SessionAuthentication',
+    'rest_framework.authentication.BasicAuthentication',
+  ),
+}
+
+JWT_AUTH = {
+  'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+}
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['34.80.121.159', 'localhost', '192.168.137.1', '127.0.0.1', '10.0.80.40', 'doctoroyy.net',
                  '139.9.116.211', 'django', '192.168.43.52', 'api.doctoroyy.net']
@@ -38,6 +50,8 @@ INSTALLED_APPS = [
   'django.contrib.staticfiles',
   'book',
   'corsheaders',
+  'rest_framework',
+  'rest_framework_jwt',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +63,6 @@ MIDDLEWARE = [
   'django.contrib.auth.middleware.AuthenticationMiddleware',
   'django.contrib.messages.middleware.MessageMiddleware',
   'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
   # 'django.middleware.common.CommonMiddleware',  # 注意顺序
 ]
 # 跨域增加忽略
@@ -110,7 +123,7 @@ DATABASES = {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'shuchong1',
     'HOST': '127.0.0.1',
-    'PASSWORD': '***',
+    'PASSWORD': '0206a0216cy',
     'USER': 'root',
     'POST': '3306',
     'OPTIONS': {
