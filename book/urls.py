@@ -11,6 +11,8 @@ urlpatterns = [
   path('book/chapter', views.chapter, name='getChapter'),
   path('book/catalog', views.catalog, name='getCatalog'),
   path('book/search', views.search_book, name='searchBook'),
+  path('book/register', views.register, name='register'),
+
   # 历史
   path('catalog/<int:book_id>/', views.catalog2, name='catalog'),
   path('book/<int:book_id>/<int:chapter_no>/', views.chapter_detail, name='chapter_detail'),

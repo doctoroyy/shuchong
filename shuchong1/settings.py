@@ -28,16 +28,31 @@ REST_FRAMEWORK = {
     'rest_framework.authentication.SessionAuthentication',
     'rest_framework.authentication.BasicAuthentication',
   ),
+  'DEFAULT_PERMISSION_CLASSES': (
+    'rest_framework.permissions.IsAuthenticated',
+  )
 }
 
 JWT_AUTH = {
   'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+  # 'JWT_RESPONSE_PAYLOAD_HANDLER': 'jwt.jwt_response_payload_handler',
+  # 'JWT_PAYLOAD_HANDLER': 'jwt.jwt_payload_handler',
 }
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['34.80.121.159', 'localhost', '192.168.137.1', '127.0.0.1', '10.0.80.40', 'doctoroyy.net',
-                 '139.9.116.211', 'django', '192.168.43.52', 'api.doctoroyy.net']
+ALLOWED_HOSTS = [
+  '34.80.121.159',
+  'localhost',
+  '192.168.137.1',
+  '127.0.0.1',
+  '10.0.80.40',
+  'doctoroyy.net',
+  '139.9.116.211',
+  'django',
+  '192.168.43.52',
+  'api.doctoroyy.net'
+]
 
 # Application definition
 
