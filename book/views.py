@@ -16,6 +16,7 @@ from main import get_json_data
 from django.views.decorators.csrf import csrf_exempt
 
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
 
 
 def index(request):
@@ -91,6 +92,7 @@ def catalog(request):
 def get_all_books(request):
   page = int(request.GET['page'])
   page_size = int(request.GET['pageSize'])
+  print(page, page_size)
 
   book_list = Novel.objects.all().values(
     'name',
@@ -114,6 +116,8 @@ def get_all_books(request):
     'total': total,
     'data': p.page(page).object_list
   }
+  # with open('1.txt', 'wb+') as file:
+  #   file.write(data)
 
   return HttpResponse(json.dumps(data))
 
@@ -123,6 +127,26 @@ def search_book(request):
   keyword = request.GET['keyword']
   books = __search_book(keyword)
   return HttpResponse(json.dumps(books))
+
+
+@csrf_exempt
+def register(request):
+  data = json.loads(request.body)
+  username = data.get('username')
+  password = data.get('password')
+  print(data)
+  ret = {
+    "code": 0,
+    "message": "ok",
+    "data": {}
+  }
+  # try:
+  User.objects.create_user(username=username, password=password)
+  return HttpResponse(json.dumps(ret))
+# except:
+#   ret['code'] = -1
+#   ret["message"] = 'error'
+#   return HttpResponse(json.dumps(ret))
 
 
 # 历史
