@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'aj)_t*x+(6vb02z(4i1m*ha+3bhs)xg08su8(*ltm_bj6wol6t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['34.80.121.159', 'localhost', '192.168.137.1', '127.0.0.1', '10.0.80.40', 'doctoroyy.net',
                  '139.9.116.211', 'django', '192.168.43.52', 'api.doctoroyy.net']
@@ -110,9 +110,9 @@ DATABASES = {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'shuchong1',
     'HOST': '127.0.0.1',
-    'PASSWORD': '***',
+    'PASSWORD': '0206a0216cy',
     'USER': 'root',
-    'POST': '3306',
+    'PORT': '33060',
     'OPTIONS': {
       'init_command': 'SET default_storage_engine=INNODB',
     }
@@ -162,6 +162,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 CACHES = {
   'default': {
     'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-    'LOCATION': '/home/wwwroot/shuchong1/shuchong1.sock',
+    'LOCATION': 'unix:/home/wwwroot/shuchong1/shuchong1.sock',
   }
 }

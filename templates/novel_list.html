@@ -9,11 +9,11 @@
 <body>
 <h1>shuchong</h1>
 
-<p>书虫小说后台，定义了前端所需的几个接口 https://api.doctoroyy.cf/</p>
+<p>书虫小说后台，定义了前端所需的几个接口 https://api.doctoroyy.net/</p>
 
 <h3>/book/getAll   获取小说列表</h3>
 
-<ul><li>method: POST</li><li><p>入参：
+<ul><li>method: GET</li><li><p>入参：
 <code>
 {&quot;page&quot;:1,&quot;pageSize&quot;:100}
 </code></p></li><li><p>出参：
@@ -45,7 +45,7 @@
 
 <h3>/book/catalog 获取小说目录详情</h3>
 
-<ul><li>method: POST</li><li><p>入参：
+<ul><li>method: GET</li><li><p>入参：
 <code>
 {&quot;id&quot;: &quot;78_78513&quot;}
 </code></p></li><li><p>出参：
@@ -75,7 +75,7 @@
 
 <h3>/book/chapter 获取小说章节详情</h3>
 
-<ul><li>method: POST</li><li><p>入参：
+<ul><li>method: GET</li><li><p>入参：
 <code>
 {&quot;id&quot;: &quot;78_78513&quot;,  &quot;chapterno&quot;: 1}
 </code></p></li><li><p>出参:
@@ -97,7 +97,7 @@
 
 <h3>/book/search 搜索小说</h3>
 
-<ul><li>method: POST</li><li><p>入参：
+<ul><li>method: GET</li><li><p>入参：
 <code>
 {&quot;keyword&quot;:&quot;诛仙&quot;}
 </code></p></li><li><p>出参:
